@@ -54,7 +54,7 @@
     {
       "id": "step-3-template-engine",
       "title": "Custom Template Engine",
-      "description": "The heart of the clipper is a three-stage template compiler. tokenizer.ts performs lexical analysis — splitting template strings into tokens for variables ({{...}}) and logic tags ({%...%}). parser.ts builds an AST from those tokens, validating syntax and organizing control flow (if/for/set). renderer.ts evaluates the AST recursively, resolving async variables (CSS selectors, LLM prompts) and applying 50+ filters via a pipeline. template-compiler.ts orchestrates the full compilation and post-processing.",
+      "description": "The heart of the clipper is a three-stage template compiler. tokenizer.ts performs lexical analysis — splitting template strings into tokens for variables and logic tags. parser.ts builds an AST from those tokens, validating syntax and organizing control flow. renderer.ts evaluates the AST recursively, resolving async variables (CSS selectors, LLM prompts) and applying 50+ filters via a pipeline. template-compiler.ts orchestrates the full compilation and post-processing.",
       "estimatedTime": 180,
       "focusDirectory": "src/utils",
       "highlightLayers": [
@@ -164,7 +164,7 @@
     {
       "id": "step-7-infrastructure",
       "title": "Storage, i18n & Cross-Browser Support",
-      "description": "storage-utils.ts wraps browser.storage APIs with chunking (8KB limit) and compression. i18n.ts loads one of 33 language packs from _locales/. Three separate manifests — manifest.chrome.json (MV3), manifest.firefox.json (MV2), and manifest.safari.json (MV3) — handle browser-specific APIs. The Webpack config (webpack.config.js) builds separate distributions for each target with Terser minification and ZIP packaging.",
+      "description": "The storage utility layer wraps browser storage APIs with chunking at an 8KB limit and compression. i18n.ts loads one of 33 language packs from _locales/. Three separate manifests — manifest.chrome.json (MV3), manifest.firefox.json (MV2), and manifest.safari.json (MV3) — handle browser-specific APIs. The Webpack config builds separate distributions for each target with Terser minification and ZIP packaging.",
       "estimatedTime": 90,
       "focusDirectory": "src",
       "highlightLayers": [
@@ -232,7 +232,7 @@
     {
       "id": "step-9-data-flow",
       "title": "Putting It All Together",
-      "description": "Here's the full clip flow: A user clicks the extension icon, opening popup.ts. They select a template and click Clip. The popup sends a message to background.ts, which relays it to content.ts in the active tab. Content script extracts page data via content-extractor.ts (using Defuddle) and merges any highlights. The template compiler tokenizes, parses, and renders the template — resolving variables, applying filters, and calling LLMs if needed. Finally, obsidian-note-creator.ts generates an obsidian:// URL to save the note. You're ready to contribute!",
+      "description": "Here's the full clip flow: A user clicks the extension icon, opening popup.ts. They select a template and click Clip. The popup sends a message to background.ts, which relays it to content.ts in the active tab. Content script extracts page data via content-extractor.ts (using Defuddle) and merges any highlights. The template compiler tokenizes, parses, and renders the template — resolving variables, applying filters, and calling LLMs if needed. Finally, obsidian-note-creator.ts generates an Obsidian URL to save the note. You're ready to contribute!",
       "estimatedTime": 60,
       "focusDirectory": "",
       "colorMode": "fileTypes"
