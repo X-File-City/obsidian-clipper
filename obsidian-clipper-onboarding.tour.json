@@ -1,0 +1,251 @@
+{
+  "id": "obsidian-clipper-onboarding",
+  "title": "Obsidian Web Clipper Onboarding",
+  "description": "A guided tour of the Obsidian Web Clipper browser extension — learn the architecture, key modules, and data flow across ~25K lines of TypeScript.",
+  "version": "1.0.0",
+  "audience": "New Contributors",
+  "prerequisites": [
+    "Familiarity with TypeScript and browser extension APIs",
+    "Basic understanding of Obsidian note-taking app"
+  ],
+  "steps": [
+    {
+      "id": "step-1-overview",
+      "title": "Project Overview",
+      "description": "Obsidian Web Clipper is the official browser extension that lets you highlight, clip, and save web content as Markdown notes in Obsidian. It supports Chrome, Firefox, Safari, and Edge with cross-browser manifests, a custom template engine, LLM integration, and 33-language i18n. The codebase is organized into entry points, utilities, managers, and styles under src/.",
+      "estimatedTime": 60,
+      "colorMode": "fileTypes"
+    },
+    {
+      "id": "step-2-entry-points",
+      "title": "Extension Entry Points",
+      "description": "A browser extension runs across three isolated contexts that communicate via message passing. background.ts is the service worker — it manages tabs, context menus, highlight state, and storage. content.ts is injected into every web page to interact with the DOM, create iframes, and relay page data. popup.ts powers the main popup UI where users select templates, edit properties, and clip notes.",
+      "estimatedTime": 120,
+      "focusDirectory": "src",
+      "highlightLayers": [
+        {
+          "id": "entry-points",
+          "name": "Entry Points",
+          "color": "#ef4444",
+          "items": [
+            { "path": "src/background.ts", "type": "file" },
+            { "path": "src/content.ts", "type": "file" },
+            { "path": "src/core/popup.ts", "type": "file" },
+            { "path": "src/core/settings.ts", "type": "file" }
+          ],
+          "opacity": 0.8,
+          "borderWidth": 2
+        },
+        {
+          "id": "html-shells",
+          "name": "HTML Shells",
+          "color": "#f97316",
+          "items": [
+            { "path": "src/popup.html", "type": "file" },
+            { "path": "src/settings.html", "type": "file" },
+            { "path": "src/side-panel.html", "type": "file" }
+          ],
+          "opacity": 0.6,
+          "borderWidth": 2
+        }
+      ],
+      "colorMode": "fileTypes"
+    },
+    {
+      "id": "step-3-template-engine",
+      "title": "Custom Template Engine",
+      "description": "The heart of the clipper is a three-stage template compiler. tokenizer.ts performs lexical analysis — splitting template strings into tokens for variables ({{...}}) and logic tags ({%...%}). parser.ts builds an AST from those tokens, validating syntax and organizing control flow (if/for/set). renderer.ts evaluates the AST recursively, resolving async variables (CSS selectors, LLM prompts) and applying 50+ filters via a pipeline. template-compiler.ts orchestrates the full compilation and post-processing.",
+      "estimatedTime": 180,
+      "focusDirectory": "src/utils",
+      "highlightLayers": [
+        {
+          "id": "template-pipeline",
+          "name": "Template Pipeline",
+          "color": "#8b5cf6",
+          "items": [
+            { "path": "src/utils/tokenizer.ts", "type": "file" },
+            { "path": "src/utils/parser.ts", "type": "file" },
+            { "path": "src/utils/renderer.ts", "type": "file" },
+            { "path": "src/utils/template-compiler.ts", "type": "file" }
+          ],
+          "opacity": 0.8,
+          "borderWidth": 2
+        },
+        {
+          "id": "filters",
+          "name": "Filters",
+          "color": "#06b6d4",
+          "items": [
+            { "path": "src/utils/filters.ts", "type": "file" },
+            { "path": "src/utils/filters", "type": "directory" }
+          ],
+          "opacity": 0.6,
+          "borderWidth": 2
+        }
+      ],
+      "colorMode": "fileTypes"
+    },
+    {
+      "id": "step-4-variables",
+      "title": "Variable Resolution",
+      "description": "Templates reference four kinds of variables, each resolved by a dedicated module. simple.ts handles page metadata like {{title}}, {{url}}, and {{author}}. selector.ts resolves CSS queries like {{selector:.article-body}} against the page DOM. schema.ts extracts Schema.org structured data. prompt.ts sends content to LLMs for intelligent extraction — powered by interpreter.ts which abstracts 10+ providers (Anthropic, OpenAI, Google, etc.).",
+      "estimatedTime": 120,
+      "focusDirectory": "src/utils",
+      "highlightLayers": [
+        {
+          "id": "variable-resolvers",
+          "name": "Variable Resolvers",
+          "color": "#10b981",
+          "items": [
+            { "path": "src/utils/variables", "type": "directory" }
+          ],
+          "opacity": 0.8,
+          "borderWidth": 2
+        },
+        {
+          "id": "interpreter",
+          "name": "LLM Interpreter",
+          "color": "#f59e0b",
+          "items": [
+            { "path": "src/utils/interpreter.ts", "type": "file" }
+          ],
+          "opacity": 0.7,
+          "borderWidth": 2
+        }
+      ],
+      "colorMode": "fileTypes"
+    },
+    {
+      "id": "step-5-content-and-highlighting",
+      "title": "Content Extraction & Highlighting",
+      "description": "content-extractor.ts coordinates page extraction using the Defuddle library to convert HTML to clean Markdown while preserving metadata (title, author, domain, favicon). highlighter.ts implements a rich text highlighting system with undo/redo history — users select text on any page and the extension stores XPath-based references for persistence. highlighter-overlays.ts renders the visual feedback. reader.ts provides a distraction-free reading mode with configurable font, theme, and syntax highlighting.",
+      "estimatedTime": 120,
+      "focusDirectory": "src/utils",
+      "highlightLayers": [
+        {
+          "id": "content-layer",
+          "name": "Content & Highlighting",
+          "color": "#3b82f6",
+          "items": [
+            { "path": "src/utils/content-extractor.ts", "type": "file" },
+            { "path": "src/utils/highlighter.ts", "type": "file" },
+            { "path": "src/utils/highlighter-overlays.ts", "type": "file" },
+            { "path": "src/utils/reader.ts", "type": "file" }
+          ],
+          "opacity": 0.8,
+          "borderWidth": 2
+        }
+      ],
+      "colorMode": "fileTypes"
+    },
+    {
+      "id": "step-6-managers",
+      "title": "UI Managers",
+      "description": "The managers/ directory contains modular controllers for each settings area and UI feature. template-manager.ts handles CRUD and lz-string compression for templates. template-ui.ts powers the template editor with property management. interpreter-settings.ts manages LLM provider configuration. general-settings.ts, reader-settings.ts, and highlights-manager.ts each own their respective UI sections. This separation keeps the large settings surface area maintainable.",
+      "estimatedTime": 90,
+      "focusDirectory": "src/managers",
+      "highlightLayers": [
+        {
+          "id": "managers-layer",
+          "name": "Managers",
+          "color": "#ec4899",
+          "items": [
+            { "path": "src/managers/template-manager.ts", "type": "file" },
+            { "path": "src/managers/template-ui.ts", "type": "file" },
+            { "path": "src/managers/interpreter-settings.ts", "type": "file" },
+            { "path": "src/managers/general-settings.ts", "type": "file" }
+          ],
+          "opacity": 0.7,
+          "borderWidth": 2
+        }
+      ],
+      "colorMode": "fileTypes"
+    },
+    {
+      "id": "step-7-infrastructure",
+      "title": "Storage, i18n & Cross-Browser Support",
+      "description": "storage-utils.ts wraps browser.storage APIs with chunking (8KB limit) and compression. i18n.ts loads one of 33 language packs from _locales/. Three separate manifests — manifest.chrome.json (MV3), manifest.firefox.json (MV2), and manifest.safari.json (MV3) — handle browser-specific APIs. The Webpack config (webpack.config.js) builds separate distributions for each target with Terser minification and ZIP packaging.",
+      "estimatedTime": 90,
+      "focusDirectory": "src",
+      "highlightLayers": [
+        {
+          "id": "storage-i18n",
+          "name": "Storage & i18n",
+          "color": "#14b8a6",
+          "items": [
+            { "path": "src/utils/storage-utils.ts", "type": "file" },
+            { "path": "src/utils/i18n.ts", "type": "file" },
+            { "path": "src/_locales", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "borderWidth": 2
+        },
+        {
+          "id": "manifests",
+          "name": "Browser Manifests",
+          "color": "#a855f7",
+          "items": [
+            { "path": "src/manifest.chrome.json", "type": "file" },
+            { "path": "src/manifest.firefox.json", "type": "file" },
+            { "path": "src/manifest.safari.json", "type": "file" }
+          ],
+          "opacity": 0.6,
+          "borderWidth": 2
+        }
+      ],
+      "colorMode": "fileTypes"
+    },
+    {
+      "id": "step-8-build-and-config",
+      "title": "Build & Configuration",
+      "description": "The project uses Webpack 5 with ts-loader for TypeScript compilation. webpack.config.js defines entry points for each extension context (background, content, popup, settings) and uses MiniCssExtractPlugin for SCSS. Vitest handles unit testing — see the test files alongside the template engine modules. providers.json configures the 10+ supported LLM providers. The xcode/ directory contains the iOS Safari wrapper project.",
+      "estimatedTime": 60,
+      "focusDirectory": "",
+      "highlightLayers": [
+        {
+          "id": "build-config",
+          "name": "Build & Config",
+          "color": "#f59e0b",
+          "items": [
+            { "path": "webpack.config.js", "type": "file" },
+            { "path": "tsconfig.json", "type": "file" },
+            { "path": "package.json", "type": "file" },
+            { "path": "providers.json", "type": "file" }
+          ],
+          "opacity": 0.7,
+          "borderWidth": 2
+        },
+        {
+          "id": "platform-dirs",
+          "name": "Platform & Scripts",
+          "color": "#64748b",
+          "items": [
+            { "path": "xcode", "type": "directory" },
+            { "path": "scripts", "type": "directory" }
+          ],
+          "opacity": 0.5,
+          "borderWidth": 2
+        }
+      ],
+      "colorMode": "fileTypes"
+    },
+    {
+      "id": "step-9-data-flow",
+      "title": "Putting It All Together",
+      "description": "Here's the full clip flow: A user clicks the extension icon, opening popup.ts. They select a template and click Clip. The popup sends a message to background.ts, which relays it to content.ts in the active tab. Content script extracts page data via content-extractor.ts (using Defuddle) and merges any highlights. The template compiler tokenizes, parses, and renders the template — resolving variables, applying filters, and calling LLMs if needed. Finally, obsidian-note-creator.ts generates an obsidian:// URL to save the note. You're ready to contribute!",
+      "estimatedTime": 60,
+      "focusDirectory": "",
+      "colorMode": "fileTypes"
+    }
+  ],
+  "metadata": {
+    "author": "Claude",
+    "createdAt": "2026-03-12T00:00:00.000Z",
+    "tags": [
+      "onboarding",
+      "browser-extension",
+      "obsidian",
+      "web-clipper"
+    ]
+  }
+}
