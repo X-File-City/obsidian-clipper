@@ -164,7 +164,7 @@
     {
       "id": "step-7-infrastructure",
       "title": "Storage, i18n & Cross-Browser Support",
-      "description": "The storage layer wraps browser APIs with chunking and compression. i18n.ts loads one of 33 language packs from _locales/. Three separate manifests handle browser-specific APIs for Chrome (MV3), Firefox (MV2), and Safari (MV3). Webpack builds separate distributions for each target.",
+      "description": "The storage layer wraps browser APIs with chunking and compression. i18n.ts loads one of 33 language packs from locales. Three separate manifests handle browser-specific APIs for Chrome (MV3), Firefox (MV2), and Safari (MV3). Webpack builds separate distributions for each target.",
       "estimatedTime": 90,
       "focusDirectory": "src",
       "highlightLayers": [
